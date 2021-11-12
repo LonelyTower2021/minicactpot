@@ -21,15 +21,19 @@ from minicactpot import minicactpot
 
 def test_calculate_payout():
     selected_row = [1, 2, 3]
-    expected = sum(selected_row)
-    actual = minicactpot.payout(selected_row)
+    expected = 10000
+    actual = minicactpot.get_payout(selected_row)
     assert actual == expected
 
-def test_get_list_of_possible_values():
+def test_get_possible_values_one_unknown():
     selected_row = set([0, 2, 3])
     expected = set([1]).union(set(range(4, 10)))
     actual = minicactpot.possible(selected_row)
     assert actual == expected
+
+def test_get_possible_values_two_unknown():
+    selected_row = set([0, 0, 3])
+    expected = set()
 
 def test_calculate_odds():
     pool = [3, 4, 5, 6, 7, 8, 9]
