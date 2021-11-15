@@ -15,6 +15,10 @@ Breakdown:
         a. Which choice will give me the highest average payout?
     4. Computer reveals all unveiled cells of Player selection
     5. Computer calculates prize
+
+Questions:
+    1. Given a row of one unknowns, what are the odds of a certain value?
+    2. Given a row of two unknowns, what are the odds of a certain value?
 """
 from minicactpot import minicactpot
 
@@ -25,19 +29,25 @@ def test_calculate_payout():
     actual = minicactpot.get_payout(selected_row)
     assert actual == expected
 
-def test_get_possible_values_one_unknown():
-    selected_row = set([0, 2, 3])
-    expected = set([1]).union(set(range(4, 10)))
-    actual = minicactpot.possible(selected_row)
+def test_get_possible_values():
+    visible_cells = {2, 3, 7, 8}
+    expected = {1, 4, 5, 6, 9}
+    actual = minicactpot.possible(visible_cells)
     assert actual == expected
 
-def test_get_possible_values_two_unknown():
-    selected_row = set([0, 0, 3])
-    expected = set()
-
-def test_calculate_odds():
-    pool = [3, 4, 5, 6, 7, 8, 9]
-    expected = 1 / len(pool)
-    actual = minicactpot.odds(pool)
+def test_calculate_odds_with_one_hidden_cells():
+    possible_values = len([3, 4, 6, 7, 9])
+    hidden_cells = 1
+    expected = 1 / possible_values
+    actual = minicactpot.odds(possible_values, hidden_cells)
     assert actual == expected
 
+def test_calculate_odds_with_two_hidden_cells():
+    possible_values = len([3, 4, 6, 7, 9])
+    hidden_cells = 2
+    expected = 1 / calculate_num_distinct_pairs(possible_values)
+    actual = minicactpot.odds(possible_values, hidden_cells)
+    assert actual == expected
+
+def calculate_num_distinct_pairs(n):
+    return (n * (n - 1)) / 2
