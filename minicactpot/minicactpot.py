@@ -16,3 +16,21 @@ def odds(possible, hidden):
 
 def possible(known):
     return set(range(1, 10)).difference(known)
+
+def average_payout(row, known):
+    unknowns = possible(known)
+    total = 0.0
+    count = 0
+    if len(row) == 2:
+        for unknown in unknowns:
+            total += calculate_payout(sum(row) + unknown)
+            count += 1
+    elif len(row) == 1:
+        for unknown in unknowns:
+            for another in unknowns:
+                new_row = {unknown, another}.union(row)
+                if len(new_row) == 3:
+                    total += calculate_payout(sum(new_row))
+                    count += 1
+
+    return total / count

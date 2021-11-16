@@ -21,10 +21,11 @@ Questions:
     2. Given a row of two unknowns, what are the odds of a certain value?
 """
 from minicactpot import minicactpot
+import pytest
 
 
 def test_calculate_payout():
-    selected_row = [1, 2, 3]
+    selected_row = {1, 2, 3}
     expected = 10000
     actual = minicactpot.get_payout(selected_row)
     assert actual == expected
@@ -48,6 +49,21 @@ def test_calculate_odds_with_two_hidden_cells():
     expected = 1 / calculate_num_distinct_pairs(possible_values)
     actual = minicactpot.odds(possible_values, hidden_cells)
     assert actual == expected
+
+def test_calculate_average_payout_for_one_hidden_cell():
+    selected_row = {2, 3}
+    visible_cells = {2, 3, 5, 6, 7, 8, 9}
+    expected = 5180.0
+    actual = minicactpot.average_payout(selected_row, visible_cells)
+    assert actual == expected
+
+def test_calculate_average_payout_for_one_hidden_cell():
+    selected_row = {3}
+    visible_cells = {3, 5, 6, 7, 8, 9}
+    expected = 3693.33
+    actual = minicactpot.average_payout(selected_row, visible_cells)
+    assert actual == pytest.approx(expected)
+
 
 def calculate_num_distinct_pairs(n):
     return (n * (n - 1)) / 2
