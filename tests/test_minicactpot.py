@@ -50,14 +50,14 @@ def test_calculate_odds_with_two_hidden_cells():
     actual = minicactpot.odds(possible_values, hidden_cells)
     assert actual == expected
 
-def test_calculate_average_payout_for_one_hidden_cell():
+def test_one_hidden_calculate_average_payout():
     selected_row = {2, 3}
     visible_cells = {2, 3, 5, 6, 7, 8, 9}
     expected = 5180.0
     actual = minicactpot.average_payout(selected_row, visible_cells)
     assert actual == expected
 
-def test_calculate_average_payout_for_one_hidden_cell():
+def test_two_hidden_calculate_average_payout():
     selected_row = {3}
     visible_cells = {3, 5, 6, 7, 8, 9}
     expected = 3693.33
