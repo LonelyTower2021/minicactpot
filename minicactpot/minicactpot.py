@@ -9,31 +9,25 @@ def calculate_payout(value):
 def get_payout(selection):
     return calculate_payout(sum(selection))
 
-def odds(possible, hidden):
-    if (hidden > 1):
-        return 1 / (possible * (possible - 1) / 2)
-    else:
-        return 1 / possible
-
-def possible(known):
+def possible_values(known):
     return set(range(1, 10)).difference(known)
 
 def average_payout(row, known):
-    unknowns = possible(known)
+    unknowns = possible_values(known)
     num_cells = len(row)
 
     if num_cells > 3:
         raise ValueError("Row size must be less than or equal to 3")
 
-    if num_cells == 2:
+    if num_cells == 3:
+        total = get_payout(row)
+        combos = 1
+    elif num_cells == 2:
         total = one_hidden_cell(row, unknowns)
         combos = get_total_permutations(len(unknowns))
-    elif num_cells == 1:
+    else:
         total = two_hidden_cell(row, unknowns)
         combos = get_total_permutations(len(unknowns), 2)
-    else:
-        total = calculate_payout(sum(row))
-        combos = 1
 
     return total / combos
 
@@ -49,7 +43,7 @@ def one_hidden_cell(row, unknowns):
     for unknown in unknowns:
         if unknown not in row:
             row.add(unknown)
-            total += calculate_payout(sum(row))
+            total += get_payout(row)
             row.remove(unknown)
     
     return total

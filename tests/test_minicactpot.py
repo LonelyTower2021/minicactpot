@@ -33,21 +33,7 @@ def test_calculate_payout():
 def test_get_possible_values():
     visible_cells = {2, 3, 7, 8}
     expected = {1, 4, 5, 6, 9}
-    actual = minicactpot.possible(visible_cells)
-    assert actual == expected
-
-def test_one_hidden_cell_calculate_odds():
-    possible_values = len([3, 4, 6, 7, 9])
-    hidden_cells = 1
-    expected = 1 / possible_values
-    actual = minicactpot.odds(possible_values, hidden_cells)
-    assert actual == expected
-
-def test_two_hidden_cell_calculate_odds():
-    possible_values = len([3, 4, 6, 7, 9])
-    hidden_cells = 2
-    expected = 1 / calculate_num_distinct_pairs(possible_values)
-    actual = minicactpot.odds(possible_values, hidden_cells)
+    actual = minicactpot.possible_values(visible_cells)
     assert actual == expected
 
 def test_one_hidden_calculate_average_payout():
