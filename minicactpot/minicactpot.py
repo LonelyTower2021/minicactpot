@@ -20,38 +20,46 @@ def possible(known):
 
 def average_payout(row, known):
     unknowns = possible(known)
-    total = 0.0
-    count = 0
-    if len(row) == 2:
-        total, count = one_hidden_cell(row, unknowns)
-    elif len(row) == 1:
-        total, count = two_hidden_cell(row, unknowns)
+    num_cells = len(row)
 
-    return total / count
+    if num_cells > 3:
+        raise ValueError("Row size must be less than or equal to 3")
+
+    if num_cells == 2:
+        total = one_hidden_cell(row, unknowns)
+        combos = get_total_permutations(len(unknowns))
+    elif num_cells == 1:
+        total = two_hidden_cell(row, unknowns)
+        combos = get_total_permutations(len(unknowns), 2)
+    else:
+        total = calculate_payout(sum(row))
+        combos = 1
+
+    return total / combos
+
+def get_total_permutations(num_obj, num_choice=1):
+    import math
+    n = math.factorial(num_obj)
+    n_r = math.factorial(num_obj - num_choice)
+    return n / n_r
 
 def one_hidden_cell(row, unknowns):
     total = 0.0
-    count = 0
 
     for unknown in unknowns:
-        if unknown in row:
-            continue
-        else:
+        if unknown not in row:
             row.add(unknown)
             total += calculate_payout(sum(row))
             row.remove(unknown)
     
-    return total, count
+    return total
 
 def two_hidden_cell(row, unknowns):
     total = 0.0
-    count = 0
 
     for first in unknowns:
         row.add(first)
-        curr_total, curr_count = one_hidden_cell(row, unknowns)
-        total += curr_total
-        count += curr_count
+        total += one_hidden_cell(row, unknowns)
         row.remove(first)
 
-    return total, count
+    return total

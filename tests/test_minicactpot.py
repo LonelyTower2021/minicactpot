@@ -36,14 +36,14 @@ def test_get_possible_values():
     actual = minicactpot.possible(visible_cells)
     assert actual == expected
 
-def test_calculate_odds_with_one_hidden_cells():
+def test_one_hidden_cell_calculate_odds():
     possible_values = len([3, 4, 6, 7, 9])
     hidden_cells = 1
     expected = 1 / possible_values
     actual = minicactpot.odds(possible_values, hidden_cells)
     assert actual == expected
 
-def test_calculate_odds_with_two_hidden_cells():
+def test_two_hidden_cell_calculate_odds():
     possible_values = len([3, 4, 6, 7, 9])
     hidden_cells = 2
     expected = 1 / calculate_num_distinct_pairs(possible_values)
@@ -64,6 +64,16 @@ def test_two_hidden_calculate_average_payout():
     actual = minicactpot.average_payout(selected_row, visible_cells)
     assert actual == pytest.approx(expected)
 
+def test_zero_hidden_calculate_payout():
+    selected_row = {4, 5, 6}
+    visible_cells = {1, 2, 3, 7, 8, 9}
+    expected = 180.0
+    actual = minicactpot.average_payout(selected_row, visible_cells)
+    assert actual == expected
+
+def test_too_large_row_size():
+    with pytest.raises(ValueError):
+        minicactpot.average_payout({1, 2, 3, 4}, {})
 
 def calculate_num_distinct_pairs(n):
     return (n * (n - 1)) / 2
