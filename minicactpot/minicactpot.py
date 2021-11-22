@@ -41,39 +41,33 @@ def get_total_permutations(num_obj, num_choice=1):
 
 def one_hidden_cell(row, unknowns):
     total = 0.0
-    cells = deep_copy(row)
 
     for unknown in unknowns:
-        if unknown not in cells:
-            cells.add(unknown)
-            total += get_payout(cells)
-            cells.remove(unknown)
+        if unknown not in row:
+            row.add(unknown)
+            total += get_payout(row)
+            row.remove(unknown)
     
     return total
 
 def two_hidden_cell(row, unknowns):
     total = 0.0
-    cells = deep_copy(row)
 
     for unknown in unknowns:
-        if unknown not in cells:
-            cells.add(unknown)
-            total += one_hidden_cell(cells, unknowns)
-            cells.remove(unknown)
+        if unknown not in row:
+            row.add(unknown)
+            total += one_hidden_cell(row, unknowns)
+            row.remove(unknown)
 
     return total
 
 def three_hidden_cell(unknowns):
     total = 0.0
-    cells = set()
+    row = set()
 
     for unknown in unknowns:
-        cells.add(unknown)
-        total += two_hidden_cell(cells, unknowns)
-        cells.remove(unknown)
+        row.add(unknown)
+        total += two_hidden_cell(row, unknowns)
+        row.remove(unknown)
 
     return total
-
-def deep_copy(row):
-    import copy
-    return copy.deepcopy(row)

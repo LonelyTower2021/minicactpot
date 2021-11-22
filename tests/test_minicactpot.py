@@ -15,10 +15,6 @@ Breakdown:
         a. Which choice will give me the highest average payout?
     4. Computer reveals all unveiled cells of Player selection
     5. Computer calculates prize
-
-Questions:
-    1. Given a row of one unknowns, what are the odds of a certain value?
-    2. Given a row of two unknowns, what are the odds of a certain value?
 """
 from minicactpot import minicactpot
 import pytest
