@@ -50,6 +50,13 @@ def test_two_hidden_calculate_average_payout():
     actual = minicactpot.average_payout(selected_row, visible_cells)
     assert actual == pytest.approx(expected)
 
+def test_three_hidden_calculate_average_payout():
+    selected_row = set()
+    visible_cells = {1, 2, 3, 4}
+    expected = 861.5
+    actual = minicactpot.average_payout(selected_row, visible_cells)
+    assert actual == pytest.approx(expected)
+
 def test_zero_hidden_calculate_payout():
     selected_row = {4, 5, 6}
     visible_cells = {1, 2, 3, 7, 8, 9}

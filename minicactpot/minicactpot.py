@@ -1,5 +1,4 @@
 import json
-from pdb import set_trace
 
 def calculate_payout(value):
     with open('payout.json', 'r') as json_fp:
@@ -25,9 +24,12 @@ def average_payout(row, known):
     elif num_cells == 2:
         total = one_hidden_cell(row, unknowns)
         combos = get_total_permutations(len(unknowns))
-    else:
+    elif num_cells == 1:
         total = two_hidden_cell(row, unknowns)
         combos = get_total_permutations(len(unknowns), 2)
+    else:
+        total = three_hidden_cell(unknowns)
+        combos = get_total_permutations(len(unknowns), 3)
 
     return total / combos
 
@@ -39,21 +41,39 @@ def get_total_permutations(num_obj, num_choice=1):
 
 def one_hidden_cell(row, unknowns):
     total = 0.0
+    cells = deep_copy(row)
 
     for unknown in unknowns:
-        if unknown not in row:
-            row.add(unknown)
-            total += get_payout(row)
-            row.remove(unknown)
+        if unknown not in cells:
+            cells.add(unknown)
+            total += get_payout(cells)
+            cells.remove(unknown)
     
     return total
 
 def two_hidden_cell(row, unknowns):
     total = 0.0
+    cells = deep_copy(row)
 
-    for first in unknowns:
-        row.add(first)
-        total += one_hidden_cell(row, unknowns)
-        row.remove(first)
+    for unknown in unknowns:
+        if unknown not in cells:
+            cells.add(unknown)
+            total += one_hidden_cell(cells, unknowns)
+            cells.remove(unknown)
 
     return total
+
+def three_hidden_cell(unknowns):
+    total = 0.0
+    cells = set()
+
+    for unknown in unknowns:
+        cells.add(unknown)
+        total += two_hidden_cell(cells, unknowns)
+        cells.remove(unknown)
+
+    return total
+
+def deep_copy(row):
+    import copy
+    return copy.deepcopy(row)
