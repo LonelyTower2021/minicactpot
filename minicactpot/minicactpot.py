@@ -1,4 +1,5 @@
 import json
+from pdb import set_trace
 
 def calculate_payout(value):
     with open('payout.json', 'r') as json_fp:
@@ -33,8 +34,12 @@ def one_hidden_cell(row, unknowns):
     count = 0
 
     for unknown in unknowns:
-        total += calculate_payout(sum(row) + unknown)
-        count += 1
+        if unknown in row:
+            continue
+        else:
+            row.add(unknown)
+            total += calculate_payout(sum(row))
+            row.remove(unknown)
     
     return total, count
 
@@ -42,11 +47,11 @@ def two_hidden_cell(row, unknowns):
     total = 0.0
     count = 0
 
-    for unknown in unknowns:
-        for another in unknowns:
-            new_row = {unknown, another}.union(row)
-            if len(new_row) == 3:
-                total += calculate_payout(sum(new_row))
-                count += 1
-    
+    for first in unknowns:
+        row.add(first)
+        curr_total, curr_count = one_hidden_cell(row, unknowns)
+        total += curr_total
+        count += curr_count
+        row.remove(first)
+
     return total, count
