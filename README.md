@@ -1,2 +1,1 @@
-A little script to help increase my odds at winning larger payouts in
-the Mini Cactpot from Final Fantasy XIV.
+A little script to help save time on deciding which row/column/diagonal to choose while playing minicactpot in FF14.
